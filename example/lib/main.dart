@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_internet_speed_test/flutter_internet_speed_test.dart';
-import 'package:kdgaugeview/kdgaugeview.dart';
 import 'package:lottie/lottie.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
@@ -30,7 +29,6 @@ class _MyAppState extends State<MyApp> {
   int _uploadCompletionTime = 0;
   bool _isServerSelectionInProgress = false;
 
-  GlobalKey<KdGaugeViewState> key = GlobalKey<KdGaugeViewState>();
 
   String? _ip;
   String? _asn;
