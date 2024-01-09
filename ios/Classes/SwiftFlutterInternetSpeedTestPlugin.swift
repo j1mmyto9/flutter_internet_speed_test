@@ -50,6 +50,14 @@ public class SwiftInternetSpeedTestPlugin: NSObject, FlutterPlugin {
     private func cancelTasks(result: FlutterResult, arguments: Any?) {
         self.speedTest.cancelTasks()
         result(true)
+        DispatchQueue.main.async {
+            var argsMap: [String: Any] = [:]
+            argsMap["type"] = 3
+            argsMap["id"] = 0
+            SwiftInternetSpeedTestPlugin.channel.invokeMethod("callListener", arguments: argsMap)
+            argsMap["id"] = 1
+            SwiftInternetSpeedTestPlugin.channel.invokeMethod("callListener", arguments: argsMap)
+        }
     }
     
     func startListening(args: Any, flutterResult: FlutterResult, methodName:String, testServer: String, fileSize: Int) {
@@ -97,18 +105,6 @@ public class SwiftInternetSpeedTestPlugin: NSObject, FlutterPlugin {
                         }
                     })
                     break
-                    //                        case .error(let error):
-                    //                            logger.printLog(message: "Error get url  is \(error.localizedDescription)")
-                    //                            var argsMap: [String: Any] = [:]
-                    //                            argsMap["id"] = currentListenerId
-                    //                            argsMap["speedTestError"] = error.localizedDescription
-                    //                            argsMap["type"] = 1
-                    //
-                    //                            SwiftInternetSpeedTestPlugin.channel.invokeMethod("callListener", arguments: argsMap)
-                    //                        }
-                    //                    }
-                    
-                    //                    break
                 case "startUploadTesting":
                     self.speedTest.runUploadTest(for: URL(string: testServer)!, size: fileSize, timeout: TimeInterval(self.DEFAULT_TEST_TIMEOUT), current: { (currentSpeed) in
                         var argsMap: [String: Any] = [:]
@@ -121,9 +117,7 @@ public class SwiftInternetSpeedTestPlugin: NSObject, FlutterPlugin {
                         }
                     }, final: { (resultSpeed) in
                         switch resultSpeed {
-                            
                         case .value(let finalSpeed):
-                            
                             var argsMap: [String: Any] = [:]
                             argsMap["id"] = currentListenerId
                             argsMap["transferRate"] = self.getSpeedInBytes(speed: finalSpeed)
@@ -134,9 +128,7 @@ public class SwiftInternetSpeedTestPlugin: NSObject, FlutterPlugin {
                                 SwiftInternetSpeedTestPlugin.channel.invokeMethod("callListener", arguments: argsMap)
                             }
                         case .error(let error):
-                            
                             self.logger.printLog(message: "Error is \(error.localizedDescription)")
-                            
                             var argsMap: [String: Any] = [:]
                             argsMap["id"] = currentListenerId
                             argsMap["speedTestError"] = error.localizedDescription

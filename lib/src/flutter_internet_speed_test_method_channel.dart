@@ -122,8 +122,8 @@ class MethodChannelFlutterInternetSpeedTest
               _logger.d('onCancel : ${call.arguments["id"]}');
             }
             callbacksById[call.arguments["id"]]!.item4();
-            downloadSteps = 0;
-            downloadRate = 0;
+            uploadSteps = 0;
+            uploadRate = 0;
             callbacksById.remove(call.arguments["id"]);
           }
         }
